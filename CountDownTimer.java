@@ -242,6 +242,51 @@ public class CountDownTimer {
 
 		return (hours + ":" + minLength1 + ":" + secLength1);
 	}
+	
+ 	public void load(String fileName) {
+        	try{
+            		Scanner fileReader = new Scanner(new File(fileName));
+            		hours = fileReader.nextInt();
+            		minutes = fileReader.nextInt();
+            		seconds = fileReader.nextInt();
+
+            		System.out.println (hours);
+            		System.out.println (minutes);
+            		System.out.println(seconds);
+        	}
+        	// problem reading the file
+        	catch(Exception error){
+            		throw new RuntimeException();
+            		// System.out.println("Oops!  Something went wrong.");
+        	}
+    	}
+
+    	public void save(String fileName) {
+        	PrintWriter out = null;
+        	try {
+            		out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+        	}
+        	catch (Exception e) {
+            		e.printStackTrace();
+        	}
+        	out.println(hours);
+        	out.println(minutes);
+        	out.println(seconds);
+        	out.close();
+    	}
+	
+	public static void setSuspend(boolean suspend) {
+        	if (suspend == true) {
+            	suspend = false;
+        	} else {
+           	 suspend = true;
+        	}
+   	 }
+
+   	 public static boolean isSuspend(){
+        	return suspend;
+   	 }
+
 
 	public int getHours() {
 		return hours;
