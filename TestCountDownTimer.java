@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.activation.CommandObject;
+
 public class TestCountDownTimer {
 
 	@Test
@@ -92,17 +94,55 @@ public class TestCountDownTimer {
 		new CountDownTimer(12, 59, 60);
 	}
 
-	// Testing for an exception; no lines of code after
-	// "new CountDownTimer("a");" will be run
-	@Test (expected = IllegalArgumentException.class)
-	public void testConstructorString1ParameterAlpha() {
-		new CountDownTimer("a");
+	@Test
+	public void testConstructor2Parameters(){
+		CountDownTimer s = new CountDownTimer(4, 30);
+		assertTrue(s.getHours() == 0);
+		assertTrue(s.getMinutes() == 4);
+		assertTrue(s.getSeconds() == 30);
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void testConstructorStringLarge() {
-		new CountDownTimer("1:23:45:678");
+	public void testConstructor2ParametersNegSecond(){
+		new CountDownTimer(23, -20);
 	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructor2ParametersNegMinute(){
+		new CountDownTimer(-12, 5);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructor2ParametersLargeSecond(){
+		new CountDownTimer(2, 65);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructor2ParametersLargeMinute(){
+		new CountDownTimer(200, 4);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructor1ParameterNegSeconds(){
+		new CountDownTimer(-43);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructor1ParameterLargeSeconds(){
+		new CountDownTimer(67);
+	}
+
+	// Testing for an exception; no lines of code after
+	// "new CountDownTimer("a");" will be run
+//	@Test (expected = IllegalArgumentException.class)
+//	public void testConstructorString1ParameterAlpha() {
+//		new CountDownTimer("a");
+//	}
+//
+//	@Test (expected = IllegalArgumentException.class)
+//	public void testConstructorStringLarge() {
+//		new CountDownTimer("1:23:45:678");
+//	}
 
 	@Test
 	public void testAdd1() {
@@ -146,16 +186,16 @@ public class TestCountDownTimer {
 	}
 
 
-	@Test
-	public void testDec1Second() {
-		CountDownTimer s = new CountDownTimer(1, 59, 59);
-
-		// dec 1
-		s.dec();
-		assertEquals(s.getHours(), 1);
-		assertEquals(s.getMinutes(), 59);
-		assertEquals(s.getSeconds(), 58);
-	}
+//	@Test
+//	public void testDec1Second() {
+//		CountDownTimer s = new CountDownTimer(1, 59, 59);
+//
+//		// dec 1
+//		s.dec();
+//		assertEquals(s.getHours(), 1);
+//		assertEquals(s.getMinutes(), 59);
+//		assertEquals(s.getSeconds(), 58);
+//	}
 
 	@Test
 	public void testEquals() {
