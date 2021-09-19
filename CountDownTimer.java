@@ -226,10 +226,10 @@ public class CountDownTimer {
     public void inc(){
         this.seconds ++;
         if (seconds >=60){
-            seconds = 00;
+            seconds = 0;
             minutes++;
             if(minutes >= 60){
-                minutes = 00;
+                minutes = 0;
                 hours++;
             }
 
