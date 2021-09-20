@@ -220,6 +220,28 @@ public class TestCountDownTimer {
 		assertEquals(s.getSeconds(), 0);
 	}
 
+	@Test
+	public void testAddHour(){
+		CountDownTimer s = new CountDownTimer(1,50,0);
+
+		//adding 660 seconds to check and see if hours will go to 2 and minutes to 1
+		s.add(660);
+		assertEquals(s.getSeconds(), 0);
+		assertEquals(s.getMinutes(), 1);
+		assertEquals(s.getHours(), 2);
+	}
+
+	@Test
+	public void testAddOther(){
+		CountDownTimer s = new CountDownTimer(20);
+		CountDownTimer s2 = new CountDownTimer(1,5,20);
+
+		//adding s2 to s
+		s.add(s2);
+		assertEquals(s.getHours(), 1);
+		assertEquals(s.getMinutes(), 5);
+		assertEquals(s.getSeconds(), 40);
+	}
 
 	@Test
 	public void testDec1Second() {
@@ -230,6 +252,67 @@ public class TestCountDownTimer {
 		assertEquals(s.getHours(), 1);
 		assertEquals(s.getMinutes(), 59);
 		assertEquals(s.getSeconds(), 58);
+	}
+
+	@Test
+	public void testDec1Second2(){
+		CountDownTimer s = new CountDownTimer(1,0,0);
+
+		//dec1 testing on the seams to see if hours correctly goes to 0 and the others to 59
+		s.dec();
+		assertEquals(s.getHours(), 0);
+		assertEquals(s.getMinutes(), 59);
+		assertEquals(s.getSeconds(), 59);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testDecPastZero(){
+		CountDownTimer s = new CountDownTimer(0,0,0);
+
+		//dec1
+		s.dec();
+	}
+
+	@Test
+	public void testSub60(){
+		CountDownTimer s = new CountDownTimer(1, 30, 5);
+
+		//subtract 60 seconds
+		s.sub(60);
+		assertEquals(s.getHours(), 1);
+		assertEquals(s.getMinutes(), 29);
+		assertEquals(s.getSeconds(), 5);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testSubPastZero(){
+		CountDownTimer s = new CountDownTimer(0 , 1, 45);
+
+		//subtract 300 seconds which should make seconds negative
+		s.sub(300);
+	}
+
+	@Test
+	public void testSubOther(){
+		CountDownTimer s = new CountDownTimer(1, 45);
+		CountDownTimer s2 = new CountDownTimer(1,43);
+
+		//subtract s2 from s
+		s.sub(s2);
+		assertEquals(s.getHours(), 0);
+		assertEquals(s.getMinutes(), 0);
+		assertEquals(s.getSeconds(), 2);
+	}
+
+	@Test
+	public void testInc1Second(){
+		CountDownTimer s = new CountDownTimer(1, 59,59);
+
+		//increment by 1
+		s.inc();
+		assertEquals(s.getHours(), 2);
+		assertEquals(s.getMinutes(), 0);
+		assertEquals(s.getSeconds(), 0);
 	}
 
 	@Test
@@ -254,6 +337,7 @@ public class TestCountDownTimer {
 		assertFalse(s1.equals(s8));
 		assertFalse(s1.equals(s9));
 	}
+
 
 	@Test
 	public void testEquals2Parameters() {
@@ -285,9 +369,145 @@ public class TestCountDownTimer {
 		assertEquals(-1,t2.compareTo(t1));
 	}
 
+	@Test
+	public void testCompareTo2Parameters(){
+		CountDownTimer t1 = new CountDownTimer(3, 45, 59);
+		CountDownTimer t2 = new CountDownTimer(1,0,14);
+		CountDownTimer t3 = new CountDownTimer(2, 59, 35);
+		CountDownTimer t4 = new CountDownTimer(3, 45, 59);
+
+		assertEquals(0, CountDownTimer.compareTo(t1, t4));
+		assertEquals(1, CountDownTimer.compareTo(t3, t2));
+		assertEquals(-1, CountDownTimer.compareTo(t2, t4));
+	}
+
 	@Test (expected = IllegalArgumentException.class)
 	public void testEqualsNull() {
 		CountDownTimer s = new CountDownTimer();
 		s.equals(null);
 	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testEquals2ParametersNull(){
+		CountDownTimer s = new CountDownTimer();
+		CountDownTimer s2 = new CountDownTimer();
+
+		s.equals(null,s2);
+	}
+
+	@Test
+	public void testSetHours(){
+		CountDownTimer s = new CountDownTimer();
+
+		//setting hours to 4
+		s.setHours(4);
+		assertEquals(s.getHours(), 4);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testSetHoursNeg(){
+		CountDownTimer s = new CountDownTimer();
+
+		//attempting to set hours to a negative number
+		s.setHours(-3);
+	}
+
+	@Test
+	public void testSettMinutes(){
+		CountDownTimer s = new CountDownTimer();
+
+		//setting minutes to 59
+		s.setMinutes(59);
+		assertEquals(s.getMinutes(), 59);
+	}
+
+	@Test (expected =  IllegalArgumentException.class)
+	public void testSetMinutesNeg(){
+		CountDownTimer s = new CountDownTimer();
+
+		//attempting to set minutes to a negative number
+		s.setMinutes(-45);
+	}
+
+	@Test (expected =  IllegalArgumentException.class)
+	public void testSetMinutesLarge(){
+		CountDownTimer s = new CountDownTimer();
+
+		//attempting to set minutes to a number larger than 60
+		s.setMinutes(75);
+	}
+
+	@Test
+	public void testSetSeconds(){
+		CountDownTimer s = new CountDownTimer();
+
+		//setting seconds to 59
+		s.setSeconds(59);
+		assertEquals(s.getSeconds(), 59);
+	}
+
+	@Test (expected =  IllegalArgumentException.class)
+	public void testSetSecondsNeg(){
+		CountDownTimer s = new CountDownTimer();
+
+		//attempting to set seconds to a negative number
+		s.setSeconds(-43);
+	}
+
+	@Test (expected =  IllegalArgumentException.class)
+	public void testSetSecondsLarge(){
+		CountDownTimer s = new CountDownTimer();
+
+		//attempting to set seconds to a number larger than 60
+		s.setSeconds(75);
+	}
+
+	@Test
+	public void testToString(){
+		CountDownTimer s = new CountDownTimer(2, 45, 56);
+
+		//Testing toString
+		s.toString();
+		assertEquals(s.toString(), "2:45:56");
+	}
+
+	@Test
+	public void testToStringAddZeroSec(){
+		CountDownTimer s = new CountDownTimer(3, 43,5);
+
+		//Testing if toString will add a zero placeholder to the text for seconds
+		s.toString();
+		assertEquals(s.toString(), "3:43:05");
+	}
+
+	@Test
+	public void testToStringAddZeroMin(){
+		CountDownTimer s = new CountDownTimer(1, 3,43);
+
+		//Testing if toString will add a zero placeholder to the text for minutes
+		s.toString();
+		assertEquals(s.toString(), "1:03:43");
+	}
+
+//	@Test
+//	public void setSuspend(){
+//		CountDownTimer s = new CountDownTimer(1, 30, 30);
+//
+//		// Set suspend to true
+//		CountDownTimer.setSuspend(true);
+//		//attempt to add while suspended
+//		s.add(50);
+//		//attempt to sub while suspended
+//		s.sub(400);
+//		//attempt to increment and decrement while suspended
+//		s.inc();
+//		s.dec();
+//		// set suspend back to false
+//		CountDownTimer.setSuspend(false);
+//
+//		assertEquals(s.getSeconds(),30);
+//		assertEquals(s.getMinutes(), 30);
+//		assertEquals(s.getHours(), 1);
+//	}
+
 }
