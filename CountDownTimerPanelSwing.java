@@ -34,6 +34,18 @@ public class CountDownTimerPanelSwing extends JPanel {
         startButton = new JButton("Start");
         add(startButton);
 
+        stopButton = new JButton("Stop");
+        add(stopButton);
+
+        saveButton = new JButton("Save");
+        add(saveButton);
+
+        loadButton = new JButton("Load");
+        add(loadButton);
+
+        addButton = new JButton("Add");
+        add(addButton);
+
         lblTime = new JLabel();
         lblTime.setText(watch.toString());
         add(lblTime);
@@ -42,6 +54,7 @@ public class CountDownTimerPanelSwing extends JPanel {
 
         startButton.addActionListener(new ButtonListener());
         // Code goes on...
+        stopButton.addActionListener(new ButtonListener());
 
         add(new JLabel("Hours"));
         hourField = new JTextField();
@@ -54,6 +67,10 @@ public class CountDownTimerPanelSwing extends JPanel {
         add(new JLabel("Seconds"));
         secondField = new JTextField();
         add(secondField);
+
+        add(new JLabel("Add"));
+        addSecondsField = new JTextField();
+        add(addSecondsField);
     }
 
     private class ButtonListener implements ActionListener {
@@ -79,6 +96,15 @@ public class CountDownTimerPanelSwing extends JPanel {
                 }
             }
 
+            if (event.getSource() == addButton){
+                try {
+                    watch.add(Integer.parseInt(addSecondsField.getText()));
+                    lblTime.setText(watch.toString());
+                } catch (IllegalArgumentException e){
+                    JOptionPane.showMessageDialog(null, "Error in field");
+                }
+            }
+
             lblTime.setText(watch.toString());
         }
 
@@ -88,7 +114,7 @@ public class CountDownTimerPanelSwing extends JPanel {
 
         public void actionPerformed(ActionEvent e) {
             try {
-                // watch.sub(1);
+                watch.sub(1);
                 lblTime.setText(watch.toString());
             }
             catch (Exception exception) {
