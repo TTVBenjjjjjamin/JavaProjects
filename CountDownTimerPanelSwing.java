@@ -110,8 +110,12 @@ public class CountDownTimerPanelSwing extends JPanel {
     private class ButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            if (event.getSource() == saveButton)
-                watch.save("Save");
+            if (event.getSource() == stringInputButton){
+                watch = new CountDownTimer(newStringField.getText());
+                secondField.setText(String.format("%d", watch.getSeconds()));
+                minField.setText(String.format("%d", watch.getMinutes()));
+                hourField.setText(String.format("%d", watch.getHours()));
+            }
 
             if (event.getSource() == decButton){
                 watch.dec();
