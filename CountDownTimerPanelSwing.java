@@ -16,8 +16,8 @@ public class CountDownTimerPanelSwing extends JPanel {
 	private CountDownTimer watch;
     private Timer javaTimer;
 
-    private JButton startButton, stopButton, saveButton, loadButton, addButton, stringInputButton, continueButton;;
-    private JTextField hourField, minField, secondField, addSecondsField, newStringField;
+    private JButton startButton, stopButton, saveButton, loadButton, addButton, stringInputButton, continueButton, subButton;;
+    private JTextField hourField, minField, secondField, addSecondsField, newStringField, subSecondsField;
 
     private JLabel lblTime;
 
@@ -46,6 +46,12 @@ public class CountDownTimerPanelSwing extends JPanel {
         addButton = new JButton("Add");
         add(addButton);
 
+        subButton = new JButton("Sub");
+        add(subButton);
+
+        continueButton = new JButton("Continue");
+        add(continueButton);
+
         lblTime = new JLabel();
         lblTime.setText(watch.toString());
         add(lblTime);
@@ -55,6 +61,12 @@ public class CountDownTimerPanelSwing extends JPanel {
         startButton.addActionListener(new ButtonListener());
         // Code goes on...
         stopButton.addActionListener(new ButtonListener());
+
+        addButton.addActionListener(new ButtonListener());
+
+        subButton.addActionListener(new ButtonListener());
+
+        continueButton.addActionListener(new ButtonListener());
 
         add(new JLabel("Hours"));
         hourField = new JTextField();
@@ -71,11 +83,36 @@ public class CountDownTimerPanelSwing extends JPanel {
         add(new JLabel("Add"));
         addSecondsField = new JTextField();
         add(addSecondsField);
+
+        add(new JLabel("Sub"));
+        subSecondsField = new JTextField();
+        add(subSecondsField);
     }
 
     private class ButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
+            if (event.getSource() == continueButton){
+               lblTime.getText();
+            }
+
+            if (event.getSource() == subButton){
+                try {
+                    watch.sub(Integer.parseInt(subSecondsField.getText()));
+                    lblTime.setText(watch.toString());
+                } catch (IllegalArgumentException e){
+                    JOptionPane.showMessageDialog(null, "Error in field");
+                }
+            }
+
+            if (event.getSource() == addButton){
+                try {
+                    watch.add(Integer.parseInt(addSecondsField.getText()));
+                    lblTime.setText(watch.toString());
+                } catch (IllegalArgumentException e){
+                    JOptionPane.showMessageDialog(null, "Error in field");
+                }
+            }
 
             if (event.getSource() == stopButton) {
                 javaTimer.stop();
@@ -92,15 +129,6 @@ public class CountDownTimerPanelSwing extends JPanel {
                 } catch (NumberFormatException io) {
                     JOptionPane.showMessageDialog(null, "Enter an integer in all fields");
                 } catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(null, "Error in field");
-                }
-            }
-
-            if (event.getSource() == addButton){
-                try {
-                    watch.add(Integer.parseInt(addSecondsField.getText()));
-                    lblTime.setText(watch.toString());
-                } catch (IllegalArgumentException e){
                     JOptionPane.showMessageDialog(null, "Error in field");
                 }
             }
