@@ -13,10 +13,11 @@ import java.awt.event.ActionListener;
  */
 public class CountDownTimerPanelSwing extends JPanel {
 
-	private CountDownTimer watch;
+    private CountDownTimer watch;
     private Timer javaTimer;
 
-    private JButton startButton, stopButton, saveButton, loadButton, addButton, stringInputButton, continueButton, subButton;;
+    private JButton startButton, stopButton, saveButton, loadButton, addButton, stringInputButton,
+            continueButton, subButton, incButton, decButton;;
     private JTextField hourField, minField, secondField, addSecondsField, newStringField, subSecondsField;
 
     private JLabel lblTime;
@@ -27,10 +28,22 @@ public class CountDownTimerPanelSwing extends JPanel {
         watch = new CountDownTimer();
         javaTimer = new Timer(1000, new TimerListener());
 
-        setLayout(new GridLayout(9, 2));
+        setLayout(new GridLayout(12, 2));
         setBackground(Color.lightGray);
 
-       // Code goes on...
+        add(new JLabel("Hours:"));
+        hourField = new JTextField();
+        add(hourField);
+
+        add(new JLabel("Minutes:"));
+        minField = new JTextField();
+        add(minField);
+
+        add(new JLabel("Seconds:"));
+        secondField = new JTextField();
+        add(secondField);
+
+        // Code goes on...
         startButton = new JButton("Start");
         add(startButton);
 
@@ -46,8 +59,26 @@ public class CountDownTimerPanelSwing extends JPanel {
         addButton = new JButton("Add");
         add(addButton);
 
+        addSecondsField = new JTextField();
+        add(addSecondsField);
+
         subButton = new JButton("Sub");
         add(subButton);
+
+        subSecondsField = new JTextField();
+        add(subSecondsField);
+
+        stringInputButton = new JButton("New");
+        add(stringInputButton);
+
+        newStringField = new JTextField();
+        add(newStringField);
+
+        incButton = new JButton("Inc");
+        add(incButton);
+
+        decButton = new JButton("Dec");
+        add(decButton);
 
         continueButton = new JButton("Continue");
         add(continueButton);
@@ -68,32 +99,30 @@ public class CountDownTimerPanelSwing extends JPanel {
 
         continueButton.addActionListener(new ButtonListener());
 
-        add(new JLabel("Hours"));
-        hourField = new JTextField();
-        add(hourField);
+        incButton.addActionListener(new ButtonListener());
 
-        add(new JLabel("Minutes"));
-        minField = new JTextField();
-        add(minField);
+        decButton.addActionListener(new ButtonListener());
 
-        add(new JLabel("Seconds"));
-        secondField = new JTextField();
-        add(secondField);
+        loadButton.addActionListener(new ButtonListener());
 
-        add(new JLabel("Add"));
-        addSecondsField = new JTextField();
-        add(addSecondsField);
-
-        add(new JLabel("Sub"));
-        subSecondsField = new JTextField();
-        add(subSecondsField);
     }
 
     private class ButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
+            if (event.getSource() == saveButton)
+                watch.save("Save");
+
+            if (event.getSource() == decButton){
+                watch.dec();
+            }
+
+            if (event.getSource() == incButton){
+                watch.inc();
+            }
+
             if (event.getSource() == continueButton){
-               lblTime.getText();
+                javaTimer.start();
             }
 
             if (event.getSource() == subButton){
@@ -109,6 +138,7 @@ public class CountDownTimerPanelSwing extends JPanel {
                 try {
                     watch.add(Integer.parseInt(addSecondsField.getText()));
                     lblTime.setText(watch.toString());
+                    //secondField.setText(String.format("%d", watch.getSeconds()));
                 } catch (IllegalArgumentException e){
                     JOptionPane.showMessageDialog(null, "Error in field");
                 }
@@ -119,7 +149,7 @@ public class CountDownTimerPanelSwing extends JPanel {
             }
 
             if (event.getSource() == startButton) {
-            	int mins, sec, milli;
+                int mins, sec, milli;
                 try {
                     mins = Integer.parseInt(hourField.getText());
                     sec = Integer.parseInt(minField.getText());
@@ -144,10 +174,13 @@ public class CountDownTimerPanelSwing extends JPanel {
             try {
                 watch.sub(1);
                 lblTime.setText(watch.toString());
+                if (watch.seconds == 0 && watch.minutes == 0 && watch.hours == 0){
+                    JOptionPane.showMessageDialog(null, "Happy New Year!!");
+                }
             }
             catch (Exception exception) {
 
-			}
+            }
         }
     }
 }
