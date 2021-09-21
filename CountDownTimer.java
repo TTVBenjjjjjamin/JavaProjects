@@ -93,13 +93,28 @@ public class CountDownTimer {
     public CountDownTimer(String startTime) {
         String[] timeSplit = startTime.split(":");
 
-//		System.out.println(timeSplit[0]);
-//		if (timeSplit.length() == 0){
-//			this.hours = 0;
-//			this.minutes = 0;
-//			this.seconds = timeSplit[0];
-//		}
+        if (timeSplit.length != 3){
+            throw new IllegalArgumentException();
+        }
+
+        if (timeSplit[1].length()>2 || timeSplit[2].length()>2){
+            throw new IllegalArgumentException();
+        }
+
+		// Set hours, minutes, and seconds from the correct spot of the array
+			int h = Integer.parseInt(timeSplit[0]);
+            int m = Integer.parseInt(timeSplit[0]);
+            int s = Integer.parseInt(timeSplit[0]);
+
+        if (h < 0 || m < 0 || s < 0){
+            throw new IllegalArgumentException();
+        }
+
+        this.hours = h;
+        this.minutes = m;
+        this.seconds = s;
     }
+
 
 
     /************************************************************
@@ -295,11 +310,12 @@ public class CountDownTimer {
             try {
                 //open the data file
                 Scanner fileReader = new Scanner(new File(fileName));
+                Scanner lineReader;
 
                 //read one int at a time
-                hours = fileReader.nextInt();
-                minutes = fileReader.nextInt();
-                seconds = fileReader.nextInt();
+                this.hours = fileReader.nextInt();
+                this.minutes = fileReader.nextInt();
+                this.seconds = fileReader.nextInt();
 
                 System.out.println(hours);
                 System.out.println(minutes);
