@@ -167,17 +167,24 @@ public class TestCountDownTimer {
 
 	// Testing for an exception; no lines of code after
 	// "new CountDownTimer("a");" will be run
-//	@Test (expected = IllegalArgumentException.class)
-//	public void testConstructorString1ParameterAlpha() {
-//		new CountDownTimer("a");
-//	}
-//
-//	@Test (expected = IllegalArgumentException.class)
-//	public void testConstructorStringLarge() {
-//		new CountDownTimer("1:23:45:678");
-//	}
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructorString1ParameterAlpha() {
+		new CountDownTimer("a");
+	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructorStringLarge() {
+		new CountDownTimer("1:23:45:678");
+	}
 
+	@Test
+	public void testConstructorString() {
+		CountDownTimer s = new CountDownTimer("1:23:32");
+
+		assertTrue(s.getHours() == 1);
+		assertTrue(s.getMinutes() == 23);
+		assertTrue(s.getSeconds() == 32);
+	}
 
 	@Test
 	public void testAdd1() {
@@ -489,25 +496,25 @@ public class TestCountDownTimer {
 		assertEquals(s.toString(), "1:03:43");
 	}
 
-//	@Test
-//	public void setSuspend(){
-//		CountDownTimer s = new CountDownTimer(1, 30, 30);
-//
-//		// Set suspend to true
-//		CountDownTimer.setSuspend(true);
-//		//attempt to add while suspended
-//		s.add(50);
-//		//attempt to sub while suspended
-//		s.sub(400);
-//		//attempt to increment and decrement while suspended
-//		s.inc();
-//		s.dec();
-//		// set suspend back to false
-//		CountDownTimer.setSuspend(false);
-//
-//		assertEquals(s.getSeconds(),30);
-//		assertEquals(s.getMinutes(), 30);
-//		assertEquals(s.getHours(), 1);
-//	}
+	@Test
+	public void setSuspend(){
+		CountDownTimer s = new CountDownTimer(1, 30, 30);
+
+		// Set suspend to true
+		CountDownTimer.setSuspend(true);
+		//attempt to add while suspended
+		s.add(50);
+		//attempt to sub while suspended
+		s.sub(400);
+		//attempt to increment and decrement while suspended
+		s.inc();
+		s.dec();
+		// set suspend back to false
+		CountDownTimer.setSuspend(false);
+
+		assertEquals(s.getSeconds(),30);
+		assertEquals(s.getMinutes(), 30);
+		assertEquals(s.getHours(), 1);
+	}
 
 }
