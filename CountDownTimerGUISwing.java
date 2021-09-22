@@ -30,6 +30,8 @@ public class CountDownTimerGUISwing {
 		gui.pack();
 		gui.setVisible(true);
 
+		CountDownTimer s = new CountDownTimer("12:32");
+
 	}
 
 }
