@@ -93,20 +93,20 @@ public class CountDownTimer {
     public CountDownTimer(String startTime) {
         String[] timeSplit = startTime.split(":");
 
-        if (timeSplit.length != 3){
+        if (timeSplit.length != 3) {
             throw new IllegalArgumentException();
         }
 
-        if (timeSplit[1].length()>2 || timeSplit[2].length()>2){
+        if (timeSplit[1].length() > 2 || timeSplit[2].length() > 2) {
             throw new IllegalArgumentException();
         }
 
-		// Set hours, minutes, and seconds from the correct spot of the array
-			int h = Integer.parseInt(timeSplit[0]);
-            int m = Integer.parseInt(timeSplit[0]);
-            int s = Integer.parseInt(timeSplit[0]);
+        // Set hours, minutes, and seconds from the correct spot of the array
+        int h = Integer.parseInt(timeSplit[0]);
+        int m = Integer.parseInt(timeSplit[1]);
+        int s = Integer.parseInt(timeSplit[2]);
 
-        if (h < 0 || m < 0 || s < 0){
+        if (h < 0 || m < 0 || s < 0) {
             throw new IllegalArgumentException();
         }
 
@@ -114,7 +114,6 @@ public class CountDownTimer {
         this.minutes = m;
         this.seconds = s;
     }
-
 
 
     /************************************************************
@@ -211,6 +210,12 @@ public class CountDownTimer {
         throw new IllegalArgumentException();
     }
 
+    /***********************************************************
+     *
+     * A method that decrements “this” CountDownTimer by 1 second.
+     *
+     * @throws IllegalArgumentException if the timer goes below zero it throws an error
+     */
     public void dec() {
         if (suspend != true) {
             int total = (this.hours * 3600) + (this.minutes * 60) + this.seconds;
@@ -225,6 +230,12 @@ public class CountDownTimer {
         }
     }
 
+    /***********************************************************
+     *
+     * A method that subtracts the given number of seconds from “this” CountDownTimer object.
+     *
+     * @param seconds user input of number of seconds to subtract from the countdown timer.
+     */
     public void sub(int seconds) {
         if (suspend != true) {
             for (int i = 0; i < seconds; i++)
@@ -233,6 +244,12 @@ public class CountDownTimer {
     }
 
 
+    /***********************************************************
+     *
+     * A method that subtracts CountDownTimer other from the “this” CountDownTimer object.
+     *
+     * @param other The other Countdown timer that is used to subtract its total seconds from the main timer.
+     */
     public void sub(CountDownTimer other) {
         if (suspend != true) {
             int temp = other.seconds + (other.minutes * 60) + (other.hours * 3600);
@@ -240,6 +257,11 @@ public class CountDownTimer {
         }
     }
 
+    /***********************************************************
+     *
+     * A method that increments the “this” CountDownTimer by 1 second.
+     *
+     */
     public void inc() {
         if (suspend != true) {
             this.seconds++;
@@ -254,139 +276,159 @@ public class CountDownTimer {
         }
     }
 
-        public void add ( int seconds) {
-            if (suspend != true) {
-                int temp = this.seconds + seconds;
-                int temp2 = temp % 60;
-                if (temp < 60) {
-                    this.seconds = this.seconds + seconds;
+    /***********************************************************
+     *
+     * A method that adds the number of seconds to “this” CountDownTimer object.
+     *
+     * @param seconds user input amount of seconds to add to the current CountDown Timer.
+     */
+    public void add(int seconds) {
+        if (suspend != true) {
+            int temp = this.seconds + seconds;
+            int temp2 = temp % 60;
+            if (temp < 60) {
+                this.seconds = this.seconds + seconds;
+            } else {
+                this.seconds = temp2;
+                this.minutes = this.minutes + (temp / 60);
+                if (this.minutes >= 60) {
+                    this.hours = this.hours + (this.minutes / 60);
+                    this.minutes = this.minutes % 60;
                 } else {
-                    this.seconds = temp2;
-                    this.minutes = this.minutes + (temp / 60);
-                    if (this.minutes >= 60) {
-                        this.hours = this.hours + (this.minutes / 60);
-                        this.minutes = this.minutes % 60;
-                    } else {
-                        this.minutes = this.minutes % 60;
-                    }
+                    this.minutes = this.minutes % 60;
                 }
-            }
-        }
-
-        public void add (CountDownTimer other) {
-            if (suspend != true) {
-                int temp = other.seconds + (other.minutes * 60) + (other.hours * 3600);
-                this.add(temp);
-            }
-        }
-
-        public String toString () {
-                int minLength = String.valueOf(minutes).length();
-                int secLength = String.valueOf(seconds).length();
-                String minLength1;
-                String secLength1;
-                if (minLength < 2) {
-                    minLength1 = "0" + String.valueOf(minutes);
-                } else {
-                    minLength1 = String.valueOf(minutes);
-                }
-
-                if (secLength < 2) {
-                    secLength1 = "0" + String.valueOf(seconds);
-                } else {
-                    secLength1 = String.valueOf(seconds);
-                }
-
-                return (hours + ":" + minLength1 + ":" + secLength1);
-            }
-
-        public void load (String fileName){
-            //if (!CountDownTimer.suspend) {
-            //  int hours;
-            //  int minutes;
-            // int seconds;
-
-            //Scanner fileReader = null;
-            try {
-                //open the data file
-                Scanner fileReader = new Scanner(new File(fileName));
-                Scanner lineReader;
-
-                //read one int at a time
-                this.hours = fileReader.nextInt();
-                this.minutes = fileReader.nextInt();
-                this.seconds = fileReader.nextInt();
-
-                System.out.println(hours);
-                System.out.println(minutes);
-                System.out.println(seconds);
-            }
-            // problem reading the file
-            catch (Exception error) {
-                throw new RuntimeException();
-                // System.out.println("Oops!  Something went wrong.");
-            }
-        }
-
-
-        public void save (String fileName){
-            PrintWriter out = null;
-            try {
-                out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            out.println(hours);
-            out.println(minutes);
-            out.println(seconds);
-            out.close();
-        }
-
-
-        public static void setSuspend ( boolean pSuspend) {
-            suspend = pSuspend;
-        }
-
-        public static boolean isSuspend () {
-            return suspend;
-        }
-
-        public int getHours () {
-            return hours;
-        }
-
-        public void setHours ( int hours) {
-            if (suspend != true) {
-                if (hours < 0) {
-                    throw new IllegalArgumentException();
-                }
-                this.hours = hours;
-            }
-        }
-
-        public int getMinutes () {
-            return minutes;
-        }
-
-        public void setMinutes ( int minutes) {
-            if (suspend != true) {
-                if (minutes < 0 || minutes > 60) {
-                    throw new IllegalArgumentException();
-                }
-                this.minutes = minutes;
-            }
-        }
-
-        public int getSeconds () {
-            return seconds;
-        }
-
-        public void setSeconds ( int seconds) {
-            if (suspend != true) {
-                if (seconds < 0 || seconds > 60) {
-                    throw new IllegalArgumentException();
-                }
-                this.seconds = seconds;
             }
         }
     }
+
+    /***********************************************************
+     *
+     * A method that adds CountDownTimer other to “this” CountDownTimer object.
+     *
+     * @param other The other Countdown timer that is used to add its total seconds to the main timer.
+     */
+    public void add(CountDownTimer other) {
+        if (suspend != true) {
+            int temp = other.seconds + (other.minutes * 60) + (other.hours * 3600);
+            this.add(temp);
+        }
+    }
+
+    /***********************************************************
+     *
+     * A method that returns a string that represents the state of a CountDownTimer with the following format:  “1:06:01”.
+     * Display the hours as is; minutes with 2 digits including a leading “0” if minutes < 10, and seconds with 2 digits
+     * again including a leading “0” if seconds < 10.
+     *
+     * @return returns the new String with the numbers being Integers and having ":" seperating them
+     */
+    public String toString() {
+        int minLength = String.valueOf(minutes).length();
+        int secLength = String.valueOf(seconds).length();
+        String minLength1;
+        String secLength1;
+        if (minLength < 2) {
+            minLength1 = "0" + String.valueOf(minutes);
+        } else {
+            minLength1 = String.valueOf(minutes);
+        }
+
+        if (secLength < 2) {
+            secLength1 = "0" + String.valueOf(seconds);
+        } else {
+            secLength1 = String.valueOf(seconds);
+        }
+
+        return (hours + ":" + minLength1 + ":" + secLength1);
+    }
+
+    public void load(String fileName) {
+        //if (!CountDownTimer.suspend) {
+        //  int hours;
+        //  int minutes;
+        // int seconds;
+
+        //Scanner fileReader = null;
+        try {
+            //open the data file
+            Scanner fileReader = new Scanner(new File(fileName));
+            Scanner lineReader;
+
+            //read one int at a time
+            this.hours = fileReader.nextInt();
+            this.minutes = fileReader.nextInt();
+            this.seconds = fileReader.nextInt();
+
+            System.out.println(hours);
+            System.out.println(minutes);
+            System.out.println(seconds);
+        }
+        // problem reading the file
+        catch (Exception error) {
+            throw new RuntimeException();
+            // System.out.println("Oops!  Something went wrong.");
+        }
+    }
+
+
+    public void save(String fileName) {
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        out.println(hours);
+        out.println(minutes);
+        out.println(seconds);
+        out.close();
+    }
+
+
+    public static void setSuspend(boolean pSuspend) {
+        suspend = pSuspend;
+    }
+
+    public static boolean isSuspend() {
+        return suspend;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        if (suspend != true) {
+            if (hours < 0) {
+                throw new IllegalArgumentException();
+            }
+            this.hours = hours;
+        }
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        if (suspend != true) {
+            if (minutes < 0 || minutes > 60) {
+                throw new IllegalArgumentException();
+            }
+            this.minutes = minutes;
+        }
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        if (suspend != true) {
+            if (seconds < 0 || seconds > 60) {
+                throw new IllegalArgumentException();
+            }
+            this.seconds = seconds;
+        }
+    }
+}
