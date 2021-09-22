@@ -28,19 +28,23 @@ public class CountDownTimerPanelSwing extends JPanel {
         watch = new CountDownTimer();
         javaTimer = new Timer(1000, new TimerListener());
 
+
         setLayout(new GridLayout(12, 2));
         setBackground(Color.lightGray);
 
         add(new JLabel("Hours:"));
         hourField = new JTextField();
+        hourField.setText("0");
         add(hourField);
 
         add(new JLabel("Minutes:"));
         minField = new JTextField();
+        minField.setText("0");
         add(minField);
 
         add(new JLabel("Seconds:"));
         secondField = new JTextField();
+        secondField.setText("0");
         add(secondField);
 
         // Code goes on...
@@ -60,18 +64,21 @@ public class CountDownTimerPanelSwing extends JPanel {
         add(addButton);
 
         addSecondsField = new JTextField();
+        addSecondsField.setText("0");
         add(addSecondsField);
 
         subButton = new JButton("Sub");
         add(subButton);
 
         subSecondsField = new JTextField();
+        subSecondsField.setText("0");
         add(subSecondsField);
 
         stringInputButton = new JButton("New");
         add(stringInputButton);
 
         newStringField = new JTextField();
+        newStringField.setText("0:0:0");
         add(newStringField);
 
         incButton = new JButton("Inc");
@@ -105,13 +112,16 @@ public class CountDownTimerPanelSwing extends JPanel {
 
         loadButton.addActionListener(new ButtonListener());
 
+        stringInputButton.addActionListener(new ButtonListener());
+
     }
 
     private class ButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
+
             if (event.getSource() == stringInputButton){
-                watch = new CountDownTimer(newStringField.getText());
+                CountDownTimer watch = new CountDownTimer(newStringField.getText());
                 secondField.setText(String.format("%d", watch.getSeconds()));
                 minField.setText(String.format("%d", watch.getMinutes()));
                 hourField.setText(String.format("%d", watch.getHours()));
