@@ -16,9 +16,10 @@ public class CountDownTimerPanelSwing extends JPanel {
     private CountDownTimer watch;
     private Timer javaTimer;
 
-    private JButton startButton, stopButton, saveButton, loadButton, addButton, stringInputButton,
-            continueButton, subButton, incButton, decButton;;
-    private JTextField hourField, minField, secondField, addSecondsField, newStringField, subSecondsField;
+    private JButton startButton, stopButton, saveButton, loadButton, addButton,
+            stringInputButton, continueButton, subButton, incButton, decButton;;
+    private JTextField hourField, minField, secondField, addSecondsField, newStringField,
+            subSecondsField;
 
     private JLabel lblTime;
 
